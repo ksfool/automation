@@ -1,0 +1,96 @@
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# ■ @{Name of Manual} START
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 
+# ○ Summary
+#    
+#    1. Contents
+#       
+#       - @{explanation}
+#       - @{explanation}
+#       - @{explanation}
+#       
+#    2. Workflow
+#       
+#       - @{Manual Symbol}-00. Checking Environment & Required Function Loading.
+#       - @{Manual Symbol}-01. Task Phase 01
+#       - @{Manual Symbol}-02. Task Phase 02
+# 
+# --------------------------------------------------------------------------
+#  □ Initialize
+# --------------------------------------------------------------------------
+        
+        #@block(init)
+        
+        # initialize
+        if [ -n "${is_interactive_mode}" -a -n "${is_log_message_mode}" ] ; then
+            
+            var=""
+        else
+            ;
+        fi
+        
+        # Usage
+        Usage() {
+            exec 1>&2
+            [[ -n $1 ]] && echo $1 
+            echo "${task_name} [USAGE] @{explanation}"
+            echo "${task_name} [USAGE] @{explanation}"
+            echo "${task_name} [USAGE] Required Option：var=sample"
+            
+            execute_manual="tasks/template.manual"
+            
+            if [ -n "${is_interactive_mode}" -a -n "${is_log_message_mode}" ] ; then
+                
+                echo "${task_name} [USAGE] sh run.sh -a var=sample ${execute_manual}"
+            fi
+            echo "${task_name} [USAGE] (export var=sample ; sh ${execute_manual})"
+        }
+        
+        # loading common features
+        
+        #@block
+        
+# --------------------------------------------------------------------------
+#  □ @{Manual Symbol}-00. Checking Environment & Required Function Loading.
+# --------------------------------------------------------------------------
+        
+        echo "" && task_name="[@{Manual Symbol}-00]" && title="Checking Environment & Required Function Loading."
+        echo "${task_name} [START] ${title}"
+        
+        #@block(auto)
+        @{Manual}
+        #@block
+        
+        echo "${task_name} [CLOSE] ${title}"
+        
+# --------------------------------------------------------------------------
+#  □ @{Manual Symbol}-01. Task Phase 01 : @{explanation}.
+# --------------------------------------------------------------------------
+        
+        echo "" && task_name="[@{Manual Symbol}-01]" && title="Task Phase 01 : @{explanation}."
+        echo "${task_name} [START] ${title} $(print_question)"
+        
+        #@block
+        @{Manual}
+        #@block
+        
+        echo "${task_name} [CLOSE] ${title}"
+        
+# --------------------------------------------------------------------------
+#  □ @{Manual Symbol}-02. Task Phase 02 : @{explanation}.
+# --------------------------------------------------------------------------
+        
+        echo "" && task_name="[@{Manual Symbol}-02]" && title="Task Phase 02 : @{explanation}."
+        echo "${task_name} [START] ${title} $(print_question)"
+        
+        #@block
+        @{Manual}
+        #@block
+        
+        echo "${task_name} [CLOSE] ${title}"
+        
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# ■ @{Name of Manual} CLOSE
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
