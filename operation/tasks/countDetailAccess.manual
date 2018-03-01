@@ -13,9 +13,9 @@
 #       
 #    2. Workflow
 #       
-#       - @{Manual Symbol}-00. Checking Environment & Required Function Loading.
-#       - @{Manual Symbol}-01. Task Phase 01
-#       - @{Manual Symbol}-02. Task Phase 02
+#       - CA-00. Checking Environment & Required Function Loading.
+#       - CA-01. Task Phase 01
+#       - CA-02. Task Phase 02
 # 
 # --------------------------------------------------------------------------
 #  □ Initialize
@@ -24,28 +24,62 @@
         #@block(init)
         
         # initialize
+        # default variable definition
+        current_date="$(date +%Y%m%d)"
+        
+        default_date_durations="90"
+        default_check_log_name="spring.log"
+        default_encodingString="$(echo ${LANG})"
+        default_duration_start="${current_date}"
+        default_duration_close="${current_date}"
+        default_logging_prefix="${default_check_log_name}."
+        default_logs_directory="/home/ubuntu/maca-web/logs"
+        
         if [ -n "${is_interactive_mode}" -a -n "${is_log_message_mode}" ] ; then
-            
-            var=""
+            # In case of task mode.
+            unset encoding
+            unset startDay
+            unset closeDay
+            unset log_name
+            unset logs_dir
+            csv_save="false"
         else
-            ;
+            # In case of shell script mode.
+            if [ -z "${csv_save}" ] ; then
+                
+                csv_save="false"
+            fi
         fi
         
         # Usage
         Usage() {
             exec 1>&2
-            [[ -n $1 ]] && echo $1 
-            echo "${task_name} [USAGE] @{explanation}"
-            echo "${task_name} [USAGE] @{explanation}"
-            echo "${task_name} [USAGE] Required Option：var=sample"
+            if [ -n "${1}" ] ; then
+                echo && echo "${1}"
+            fi
+            echo "${task_name} [USAGE] Calculating Access Count from logs."
+            echo "${task_name} [USAGE] Optional：encoding=encoding [default:${default_encodingString}]"
+            echo "${task_name} [USAGE] Optional：startDay=YYYYMMDD [default:${default_duration_start}]"
+            echo "${task_name} [USAGE] Optional：closeDay=YYYYMMDD [default:${default_duration_close}]"
+            echo "${task_name} [USAGE] Optional：log_name=log_file [default:${default_check_log_name}]"
+            echo "${task_name} [USAGE] Optional：logs_dir=dir_path [default:${default_logs_directory}]"
+            echo "${task_name} [USAGE] Optional：csv_save [default:false]"
+            echo "${task_name} [USAGE] "
+            echo "${task_name} [USAGE] 01. If duration is not defined, default is today."
+            echo "${task_name} [USAGE] 02. If log directory is not defined, default is "${default_logs_directory}"."
+            echo "${task_name} [USAGE] 03. Maximum collect duration is ${default_date_durations}days."
+            echo "${task_name} [USAGE] 04. f option will save CSV file to ${HOME}/access_count_YYYYMMDD_YYYYMMDD_YYYYYMMDD_HHMMSS.csv.(access_count_\$from_\$to_\$exec_time.csv)"
             
-            execute_manual="tasks/template.manual"
+            execute_manual="tasks/countDetailAccess.manual"
             
             if [ -n "${is_interactive_mode}" -a -n "${is_log_message_mode}" ] ; then
                 
-                echo "${task_name} [USAGE] sh run.sh -a var=sample ${execute_manual}"
+                echo "${task_name} [USAGE] run.sh -s -f ${execute_manual}"
+                echo "${task_name} [USAGE] run.sh -s -f -a encoding=${default_encodingString},startDay=${default_duration_start},closeDay=${default_duration_close},log_name=${default_check_log_name},logs_dir=${default_logs_directory},csv_save ${execute_manual}"
+            else
+                echo "${task_name} [USAGE] (sh ${execute_manual})"
+                echo "${task_name} [USAGE] (export encoding=${default_encodingString}; export startDay=${default_duration_start}; export closeDay=${default_duration_close}; export log_name=${default_check_log_name}; export logs_dir=${default_logs_directory}; export export csv_save=true ; sh ${execute_manual})"
             fi
-            echo "${task_name} [USAGE] (export var=sample ; sh ${execute_manual})"
         }
         
         # loading common features
@@ -53,10 +87,10 @@
         #@block
         
 # --------------------------------------------------------------------------
-#  □ @{Manual Symbol}-00. Checking Environment & Required Function Loading.
+#  □ CA-00. Checking Environment & Required Function Loading.
 # --------------------------------------------------------------------------
         
-        echo "" && task_name="[@{Manual Symbol}-00]" && title="Checking Environment & Required Function Loading."
+        echo "" && task_name="[CA-00]" && title="Checking Environment & Required Function Loading."
         echo "${task_name} [START] ${title}"
         
         #@block(auto)
@@ -66,27 +100,39 @@
         echo "${task_name} [CLOSE] ${title}"
         
 # --------------------------------------------------------------------------
-#  □ @{Manual Symbol}-01. Task Phase 01 : @{explanation}.
+#  □ CA-01. Task Phase 01 : @{explanation}.
 # --------------------------------------------------------------------------
         
-        echo "" && task_name="[@{Manual Symbol}-01]" && title="Task Phase 01 : @{explanation}."
+        echo "" && task_name="[CA-01]" && title="Task Phase 01 : @{explanation}."
         echo "${task_name} [START] ${title} $(print_question)"
         
         #@block
-        @{Manual}
+        echo "${default_date_durations}"
+        echo "${default_check_log_name}"
+        echo "${default_encodingString}"
+        echo "${default_duration_start}"
+        echo "${default_duration_close}"
+        echo "${default_logging_prefix}"
+        echo "${default_logs_directory}"
         #@block
         
         echo "${task_name} [CLOSE] ${title}"
         
 # --------------------------------------------------------------------------
-#  □ @{Manual Symbol}-02. Task Phase 02 : @{explanation}.
+#  □ CA-02. Task Phase 02 : @{explanation}.
 # --------------------------------------------------------------------------
         
-        echo "" && task_name="[@{Manual Symbol}-02]" && title="Task Phase 02 : @{explanation}."
+        echo "" && task_name="[CA-02]" && title="Task Phase 02 : @{explanation}."
         echo "${task_name} [START] ${title} $(print_question)"
         
         #@block
-        @{Manual}
+        echo "${default_date_durations}"
+        echo "${default_check_log_name}"
+        echo "${default_encodingString}"
+        echo "${default_duration_start}"
+        echo "${default_duration_close}"
+        echo "${default_logging_prefix}"
+        echo "${default_logs_directory}"
         #@block
         
         echo "${task_name} [CLOSE] ${title}"
